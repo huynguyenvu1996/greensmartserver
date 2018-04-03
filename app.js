@@ -27,6 +27,7 @@ const socketio = require('socket.io')
 
 //Include the routes file
 const routes = require('./app/routers')
+const publicRoutes = require('./public/clientRouter')
 const appConfigs = require('./configs/application')
 
 // Socket io
@@ -39,6 +40,7 @@ app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
 
 //Use the routers file
+app.use(publicRoutes)
 app.use('/api/', routes)
 app.set('socketio', io)
 

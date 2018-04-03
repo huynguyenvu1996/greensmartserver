@@ -20,40 +20,25 @@ const utils = require('../local_modules/green_smart');
 const networkUtils = utils.networkUtils;
 const owmConfigs = require('../configs/openweathermap_api');
 
+class Weather {
+  constructor (temperature, humidity, rain) {
+    this.temperature = temperature
+    this.humidity = humidity
+    this.rain = rain
+    this.date = Date.now()
+  }
 
-class OpenWeather {
-    constructor(
-        _id,
-        name,
-        temperature,
-        humidity,
-        rain,
-        description,
-        icon,
-        country,
-        dt,
-        _rev
-    );
-
-    parseWeather = (result) => {
-        return new OpenWeather(
-            utils.stringUtils.getUniqueId(),
-            result.name,
-            result.main.temp,
-            result.main.humidity,
+  static parseWeather (result) {
+    return new Weather(
+      result.temperature,
+      result.humidity,
             result.rain,
-            result.weather.description,
-            result.weather.icon,
-            result.sys.country,
-            result.date
         )
     }
 
-    parseListWeather = (result) => {
+  static parseListWeather (result) {
         try {
             let listWeather = JSON.parse(result);
-
-
 
         } catch (e) {
 
@@ -62,6 +47,9 @@ class OpenWeather {
 }
 
 module.exports = {
+  getWeatherFromObject: (data) => {
+    return Weather.parseWeather(data)
+  },
     getCurrentWeatherFromInternet: (coordinate) => {
         let query = {
             lat: coordinate.lat,
