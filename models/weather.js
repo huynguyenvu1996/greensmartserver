@@ -33,7 +33,7 @@ class OpenWeather {
         country,
         dt,
         _rev
-    )
+    );
 
     parseWeather = (result) => {
         return new OpenWeather(

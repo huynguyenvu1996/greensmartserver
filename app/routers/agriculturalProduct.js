@@ -17,24 +17,25 @@
 "use strict";
 
 const router = require('express').Router();
-const utils = require('../local_modules/green_smart');
+const utils = require('../../local_modules/green_smart/index')
 const agriculturalProductController = require('../controllers/agriculturalProductController');
 const key = 'agp';
 let upload = utils.uploadUtils.getInstance(key);
 
-module.exports = () => {
+router.get('/list', agriculturalProductController.Action.getListAGP)
 
-    router.get('/list', agriculturalProductController.Action.getListAGP);
+router.get('/view/:id', agriculturalProductController.Action.getViewAGP)
 
-    router.get('/view/:id', agriculturalProductController.Action.getViewAGP);
+router.post('/create', upload.single('image_file'),
+  agriculturalProductController.Action.postCreateAGP)
 
-    router.post('/create', upload.single('image_file'), agriculturalProductController.Action.postCreateAGP);
+router.post('/update', upload.single('image_file'),
+  agriculturalProductController.Action.postUpdateAGP)
 
-    router.post('/update', upload.single('image_file'), agriculturalProductController.Action.postUpdateAGP);
+router.get('/delete/:id/:rev',
+  agriculturalProductController.Action.getDeleteAGP)
 
-    router.get('/delete/:id/:rev', agriculturalProductController.Action.getDeleteAGP);
+router.post('/get-compatible-weather-list',
+  agriculturalProductController.Action.postCompatibleWeatherList)
 
-    router.post('/get-compatible-weather-list', agriculturalProductController.Action.postCompatibleWeatherList);
-
-    return router;
-}
+module.exports = router

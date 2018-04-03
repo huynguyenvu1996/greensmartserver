@@ -16,9 +16,8 @@
 
 "use strict";
 
-
-const openWeatherModel = require('../models/openWeatherModel');
-const utils = require('../local_modules/green_smart');
+const openWeatherModel = require('../../models/openWeatherModel')
+const utils = require('../../local_modules/green_smart/index')
 const dataUtils = utils.dataUtils;
 const dateUtils = utils.dateUtils;
 const _ = require('lodash');

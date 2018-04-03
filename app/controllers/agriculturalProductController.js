@@ -16,9 +16,10 @@
 
 "use strict";
 
-const agriculturalProductModel = require('../models/agriculturalProductModel');
-const openWeatherController = require('../controllers/openWeatherController');
-const utils = require('../local_modules/green_smart');
+const agriculturalProductModel = require(
+  '../../models/agriculturalProductModel')
+const openWeatherController = require('./openWeatherController')
+const utils = require('../../local_modules/green_smart/index')
 const dataUtils = utils.dataUtils;
 const dateUtils = utils.dateUtils;
 const _ = require('lodash');

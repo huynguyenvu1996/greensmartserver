@@ -16,33 +16,34 @@
 
 "use strict";
 
-const appConfigs = require('./configs/application')
 const express = require('express');
+const app = express()
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-let app = express();
-let router = express.Router();
+const http = require('http')
+const ip = require('ip')
+const server = http.createServer(app)
+const socketio = require('socket.io')
+
+//Include the routes file
+const routes = require('./app/routers')
+const appConfigs = require('./configs/application')
+
+// Socket io
+const io = socketio(server)
+require('./app/socketio/socket')(io)
+
 app.use(express.static(__dirname + '/public'));
 
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
 
-
-//Include the routes file
-let routes = require('./routers/router')();
-let agriculturalProduct = require('./routers/agriculturalProduct')();
-let notifications = require('./routers/notifications')();
-let weather = require('./routers/weather')();
-let openWeather = require('./routers/openWeather')();
-
 //Use the routers file
-app.use('/', routes);
-app.use('/agricultural-product', agriculturalProduct);
-app.use('/notifications', notifications);
-app.use('/weather', weather);
-app.use('/openweather',openWeather);
-
+app.use('/api/', routes)
+app.set('socketio', io)
 
 //Starting server
-app.listen(appConfigs.server.port);
+server.listen(appConfigs.server.port)
+console.log('Server chay tai dia chi: ' + ip.address() + ':' +
+  appConfigs.server.port)
 

@@ -17,8 +17,11 @@
 "use strict";
 
 const router = require('express').Router();
+const openWeatherController = require('../controllers/openWeatherController')
 
-module.exports = () => {
-    
-    return router;
-}
+router.get('/weather',
+  openWeatherController.Action.getCurrentWeatherFromInternet)
+router.get('/forecast',
+  openWeatherController.Action.getWeatherForecastFromDatabase)
+
+module.exports = router

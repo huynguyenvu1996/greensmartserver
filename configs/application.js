@@ -21,7 +21,7 @@ module.exports = {
     //server
     server: {
         host: '127.0.0.1',
-        port: '3010'
+      port: '3000',
     },
     //content delivery network hosting
     cdn: {
