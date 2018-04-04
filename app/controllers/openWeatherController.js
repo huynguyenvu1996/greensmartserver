@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
 
-      http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -74,8 +74,8 @@ let reloadWeatherForecastFromDatabase = (req, res, next) => {
                             .then((rsg) => {
                                 res.json(rsg);
                             }).catch((error) => {
-                                res.json(error);
-                            })
+                            res.json(error);
+                        })
                     })
                     .catch((error) => {
                         res.json(error);
@@ -84,8 +84,8 @@ let reloadWeatherForecastFromDatabase = (req, res, next) => {
                 res.json(dataUtils.createErrorInstance("GetWeatherForecastFromInternet: Get data forecast is not successful!"));
             }
         }).catch((error) => {
-            res.json(error);
-        });
+        res.json(error);
+    });
 }
 
 module.exports.Action = {
@@ -121,8 +121,8 @@ module.exports.Action = {
                             .then((result) => {
                                 this.reloadWeatherForecastFromDatabase(req, res, next);
                             }).catch((error) => {
-                                res.json(error);
-                            });
+                            res.json(error);
+                        });
                     }
                     else {
                         console.log('==> IsPassedNewHour: false');
@@ -130,8 +130,8 @@ module.exports.Action = {
                     }
                 }
             }).catch((error) => {
-                res.json(error);
-            })
+            res.json(error);
+        })
     },
     localGetWeatherForecastFromDatabase: async (req, res, next) => {
         let listWeather = null, resultListWeather = null, e = null, reload = false;
@@ -187,7 +187,7 @@ module.exports.Action = {
                 e = dataUtils.createErrorInstance("GetWeatherForecastFromInternet: Get data forecast is not successful!");
             }
         }
-        
+
         return new Promise((resolve, reject) => {
             !_.isNull(e) ? reject(e) : resolve(listWeather);
         })
