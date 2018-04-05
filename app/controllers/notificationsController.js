@@ -18,7 +18,8 @@
 const notificationModel = require(
   '../../models/notificationsModel')
 
-module.exports.listNotifications = (req, res, next) => {
+const Action = {}
+Action.listNotifications = (req, res, next) => {
   notificationModel.listNotifications().then((result) => {
     res.json(result)
   }).catch((error) => {
@@ -26,7 +27,7 @@ module.exports.listNotifications = (req, res, next) => {
   })
 }
 
-module.exports.getNotification = (req, res) => {
+Action.getNotification = (req, res) => {
   let _id = req.params.id
   notificationModel.getNotification(_id).then((result) => {
     res.json(result)
@@ -35,8 +36,12 @@ module.exports.getNotification = (req, res) => {
   })
 }
 
-module.exports.create = (data) => {
+Action.create = (data) => {
   notificationModel.createNotification(data)
+}
+
+module.exports = {
+  Action,
 }
 
 

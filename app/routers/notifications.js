@@ -20,7 +20,7 @@ const router = require('express').Router();
 const notificationsController = require(
   '../controllers/notificationsController')
 
-router.get('/list', notificationsController.listNotifications)
-router.get('/view/:id', notificationsController.getNotification)
+router.get('/list', notificationsController.Action.listNotifications)
+router.get('/view/:id', notificationsController.Action.getNotification)
 
 module.exports = router
