@@ -32,7 +32,7 @@ class Weather {
     return new Weather(
       result.temperature,
       result.humidity,
-            result.rain,
+      result.rain,
         )
     }
 
