@@ -15,3 +15,28 @@
  */
 
 "use strict";
+const notificationModel = require(
+  '../../models/notificationsModel')
+
+module.exports.listNotifications = (req, res, next) => {
+  notificationModel.listNotifications().then((result) => {
+    res.json(result)
+  }).catch((error) => {
+    res.json(error)
+  })
+}
+
+module.exports.getNotification = (req, res) => {
+  let _id = req.params.id
+  notificationModel.getNotification(_id).then((result) => {
+    res.json(result)
+  }).catch((error) => {
+    res.json(error)
+  })
+}
+
+module.exports.create = (data) => {
+  notificationModel.createNotification(data)
+}
+
+
