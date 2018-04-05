@@ -4,9 +4,9 @@
  * @Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
-
-      http://www.apache.org/licenses/LICENSE-2.0
-
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,15 +27,15 @@ router.get('/list', agriculturalProductController.Action.getListAGP);
 router.get('/view/:id', agriculturalProductController.Action.getViewAGP);
 
 router.post('/create', upload.single('image_file'),
-  agriculturalProductController.Action.postCreateAGP);
+    agriculturalProductController.Action.postCreateAGP);
 
 router.post('/update', upload.single('image_file'),
-  agriculturalProductController.Action.postUpdateAGP);
+    agriculturalProductController.Action.postUpdateAGP);
 
 router.get('/delete/:id/:rev',
-  agriculturalProductController.Action.getDeleteAGP);
+    agriculturalProductController.Action.getDeleteAGP);
 
 router.post('/get-compatible-weather-list',
-  agriculturalProductController.Action.postCompatibleWeatherList);
+    agriculturalProductController.Action.postCompatibleWeatherList);
 
 module.exports = router;

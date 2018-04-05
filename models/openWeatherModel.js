@@ -4,9 +4,9 @@
  * @Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
-
-      http://www.apache.org/licenses/LICENSE-2.0
-
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,19 +30,17 @@ let db = databaseUtils.getConnect();
 
 class OpenWeather {
 
-    constructor(
-        _id,
-        city_id,
-        city_name,
-        temperature,
-        humidity,
-        rain,
-        description,
-        icon,
-        country,
-        dt,
-        _rev
-    ) {
+    constructor(_id,
+                city_id,
+                city_name,
+                temperature,
+                humidity,
+                rain,
+                description,
+                icon,
+                country,
+                dt,
+                _rev) {
         this._id = _id;
         this.city_id = city_id;
         this.city_name = city_name;
@@ -218,9 +216,9 @@ module.exports = {
             await db.find({
                 selector: {
                     type: docType,
-                    dt: { $gt: true }
+                    dt: {$gt: true}
                 },
-                sort: [{ dt: 'asc' }]
+                sort: [{dt: 'asc'}]
             }, (error, result) => {
                 if (error) {
                     e = databaseUtils.parseError(error);
