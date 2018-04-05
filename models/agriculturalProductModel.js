@@ -4,9 +4,9 @@
  * @Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
-
-      http://www.apache.org/licenses/LICENSE-2.0
-
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,18 +28,19 @@ let db = databaseUtils.getConnect();
 
 class AgriculturalProduct {
 
-    constructor(_id, name, image, temp_min, temp_max, humidity_min, humidity_max, detect_rain, drying, created_at, _rev) {
-        this._id = _id,
-            this.name = name,
-            this.image = image,
-            this.temp_min = temp_min,
-            this.temp_max = temp_max,
-            this.humidity_min = humidity_min,
-            this.humidity_max = humidity_max,
-            this.detect_rain = detect_rain,
-            this.drying = drying,
-            this.created_at = created_at,
-            this._rev = _rev
+    constructor(_id, name, image, temp_min, temp_max, humidity_min, humidity_max, detect_rain, drying, notification, created_at, _rev) {
+        this._id = _id;
+        this.name = name;
+        this.image = image;
+        this.temp_min = temp_min;
+        this.temp_max = temp_max;
+        this.humidity_min = humidity_min;
+        this.humidity_max = humidity_max;
+        this.detect_rain = detect_rain;
+        this.drying = drying;
+        this.notification = notification;
+        this.created_at = created_at;
+        this._rev = _rev;
     }
 
     static parseAGPFromDatabase(result) {
@@ -54,6 +55,7 @@ class AgriculturalProduct {
                 parseInt(result.humidity_max),
                 result.detect_rain,
                 result.drying,
+                result.notification,
                 result.created_at,
                 result._rev
             )
@@ -77,20 +79,22 @@ class AgriculturalProduct {
 
     static parseAGPFromRequest(req) {
         try {
-            return dataUtils.createSuccessInstance(
-                new AgriculturalProduct(
-                    req._id,
-                    req.name,
-                    req.image,
-                    parseInt(req.temp_min),
-                    parseInt(req.temp_max),
-                    parseInt(req.humidity_min),
-                    parseInt(req.humidity_max),
-                    req.detect_rain,
-                    req.drying,
-                    req.created_at,
-                    req._rev
-                ), 1);
+            let agp = new AgriculturalProduct(
+                req._id,
+                req.name,
+                req.image,
+                parseInt(req.temp_min),
+                parseInt(req.temp_max),
+                parseInt(req.humidity_min),
+                parseInt(req.humidity_max),
+                req.detect_rain,
+                req.drying,
+                req.notification,
+                req.created_at,
+                req._rev
+            );
+            return dataUtils.createSuccessInstance(agp, 1);
+
         }
         catch (e) {
             return dataUtils.createErrorInstance('ParseAGPFromDatabase: ' + e.message);
@@ -103,15 +107,12 @@ let isWeatherCompatible = (agp, weather) => {
     // console.log('---------------------------------');
     // console.log(agp);
     // console.log(weather);
-    if ((weather.temperature >= agp.temp_min && weather.temperature <= agp.temp_max) &&
+    return !!((weather.temperature >= agp.temp_min && weather.temperature <= agp.temp_max) &&
         (weather.humidity >= agp.humidity_min && weather.humidity <= agp.humidity_max) &&
         (!(weather.rain ^ agp.detect_rain) &&
-            (dateUtils.isHourInterval(weather.dt, 6, 16)))
-    ) {
-        return true;
-    }
-    return false;
-}
+            (dateUtils.isHourInterval(weather.dt, 6, 16))));
+
+};
 
 module.exports = {
     /*https://github.com/pouchdb/pouchdb/issues/6399*/
@@ -132,9 +133,9 @@ module.exports = {
             await db.find({
                 selector: {
                     type: docType,
-                    created_at: { $gt: true }
+                    created_at: {$gt: true}
                 },
-                sort: [{ created_at: 'desc' }]
+                sort: [{created_at: 'desc'}]
             }, (error, result) => {
                 if (error) {
                     e = databaseUtils.parseError(error);
@@ -160,11 +161,11 @@ module.exports = {
             e = databaseUtils.parseError(error);
         });
         return new Promise((resolve, reject) => {
-            !_.isNull(agp) ? resolve(agp) : reject(error)
+            !_.isNull(agp) ? resolve(agp) : reject(e)
         })
     },
     createAGP: async (data) => {
-        let res = null, error = null;
+        let res = null, e = null;
         let agp = null;
         try {
             agp = {
@@ -177,25 +178,26 @@ module.exports = {
                 humidity_max: parseInt(data.humidity_max),
                 detect_rain: data.detect_rain,
                 drying: data.drying,
+                notification: data.notification,
                 created_at: Date.now().toString(),
                 type: docType
             }
-        } catch (e) {
-            dataUtils.createErrorInstance('CreateAGP: ' + e.message);
+        } catch (error) {
+            dataUtils.createErrorInstance('CreateAGP: ' + error.message);
         }
         await db.put(agp)
             .then(function (response) {
                 res = dataUtils.createBasicSuccessInstance()
-            }).catch(function (err) {
+            }).catch(function (error) {
                 e = databaseUtils.parseError(error);
             });
 
         return new Promise((resolve, reject) => {
-            !_.isNull(res) ? resolve(res) : reject(error)
+            !_.isNull(res) ? resolve(res) : reject(e)
         })
     },
     updateAGP: async (data) => {
-        let res = null, error = null;
+        let res = null, e = null;
         let agp = {
             _id: data._id,
             name: data.name,
@@ -206,20 +208,21 @@ module.exports = {
             humidity_max: parseInt(data.humidity_max),
             detect_rain: data.detect_rain,
             drying: data.drying,
+            notification: data.notification,
             created_at: data.create_at,
             type: docType,
             _rev: data._rev
-        }
+        };
 
         await db.put(agp)
             .then(function (response) {
                 res = dataUtils.createBasicSuccessInstance()
-            }).catch(function (err) {
+            }).catch(function (error) {
                 e = databaseUtils.parseError(error);
             });
 
         return new Promise((resolve, reject) => {
-            !_.isNull(res) ? resolve(res) : reject(error)
+            !_.isNull(e) ? reject(e) : resolve(res);
         })
     },
 
@@ -231,7 +234,7 @@ module.exports = {
             e = databaseUtils.parseError(error);
         });
         return new Promise((resolve, reject) => {
-            !_.isNull(res) ? resolve(res) : reject(e);
+            !_.isNull(e) ? reject(e) : resolve(res);
         })
     },
 
@@ -254,5 +257,4 @@ module.exports = {
         });
     }
 
-
-}
+};
