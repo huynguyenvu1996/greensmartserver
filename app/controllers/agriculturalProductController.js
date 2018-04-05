@@ -4,9 +4,9 @@
  * @Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
-
-      http://www.apache.org/licenses/LICENSE-2.0
-
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,7 +17,7 @@
 "use strict";
 
 const agriculturalProductModel = require(
-  '../../models/agriculturalProductModel')
+    '../../models/agriculturalProductModel')
 const openWeatherController = require('./openWeatherController')
 const utils = require('../../local_modules/green_smart/index')
 const dataUtils = utils.dataUtils;
@@ -32,8 +32,8 @@ module.exports.Action = {
             .then((result) => {
                 res.json(result);
             }).catch((error) => {
-                res.json(error);
-            })
+            res.json(error);
+        })
     },
 
     getViewAGP: (req, res, next) => {
@@ -42,8 +42,8 @@ module.exports.Action = {
             .then((result) => {
                 res.json(result);
             }).catch((error) => {
-                res.json(error);
-            })
+            res.json(error);
+        })
     },
 
     postCreateAGP: (req, res, next) => {
@@ -54,8 +54,8 @@ module.exports.Action = {
             .then((result) => {
                 res.json(result);
             }).catch((error) => {
-                res.json(error);
-            })
+            res.json(error);
+        })
     },
 
     postUpdateAGP: (req, res, next) => {
@@ -66,8 +66,8 @@ module.exports.Action = {
             .then((result) => {
                 res.json(result);
             }).catch((error) => {
-                res.json(error);
-            })
+            res.json(error);
+        })
     },
 
     getDeleteAGP: (req, res, next) => {
@@ -79,8 +79,8 @@ module.exports.Action = {
             .then((result) => {
                 res.json(result);
             }).catch((error) => {
-                res.json(error);
-            })
+            res.json(error);
+        })
     },
 
     postCompatibleWeatherList: (req, res, next) => {
@@ -95,11 +95,11 @@ module.exports.Action = {
                     .then((rsc) => {
                         res.json(rsc);
                     }).catch((error) => {
-                        res.json(error);
-                    })
+                    res.json(error);
+                })
             }).catch((error) => {
-                res.json(dataUtils.createErrorInstance(error.message));
-            });
+            res.json(dataUtils.createErrorInstance(error.message));
+        });
     }
 
 }
