@@ -47,4 +47,5 @@ module.exports = (io) => {
       console.log('Socket rain', data)
       socket.broadcast.emit(socketEvent.EVENT_RAIN_SENSOR, data)
     })
+  })
 };
