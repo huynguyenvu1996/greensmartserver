@@ -28,11 +28,12 @@ class Weather {
         this.date = Date.now()
     }
 
-    static parseWeather(result) {
-        return new Weather(
-            result.temperature,
-            result.humidity,
-            result.rain,
+  static parseWeather (result) {
+    return new Weather(
+      result.temperature,
+      result.humidity,
+      result.rain,
+
         )
     }
 
