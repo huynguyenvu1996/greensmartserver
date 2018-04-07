@@ -25,7 +25,7 @@ module.exports = {
     getUniqueId: () => {
         return crypto.randomBytes(16).toString("hex");
     }
-}
+};
 
 
 

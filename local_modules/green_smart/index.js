@@ -16,6 +16,7 @@
 
 "use strict";
 
+const config = require('./config');
 const database = require('./database');
 const network = require('./network');
 const string = require('./string');
@@ -23,6 +24,7 @@ const upload = require('./upload');
 const data = require('./data');
 const date = require('./date');
 
+module.exports.configUtils = config;
 module.exports.databaseUtils = database;
 module.exports.networkUtils = network;
 module.exports.stringUtils = string;

@@ -16,8 +16,8 @@
 
 "use strict";
 
-const openWeatherModel = require('../../models/openWeatherModel')
-const utils = require('../../local_modules/green_smart/index')
+const openWeatherModel = require('../../models/openWeatherModel');
+const utils = require('../../local_modules/green_smart/index');
 const dataUtils = utils.dataUtils;
 const dateUtils = utils.dateUtils;
 const _ = require('lodash');
@@ -25,7 +25,7 @@ const _ = require('lodash');
 const coord = {
     lat: 10.771135,
     lng: 106.6707976,
-}
+};
 
 let localReloadWeatherForecastFromDatabase = async (req, res, next) => {
     console.log('huy2');
