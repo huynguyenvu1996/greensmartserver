@@ -21,7 +21,7 @@ module.exports = {
     //server
     server: {
         host: '127.0.0.1',
-      port: '3000',
+        port: '3000',
     },
     //content delivery network hosting
     cdn: {
@@ -31,9 +31,10 @@ module.exports = {
     //upload directory
     upload: {
         path: 'public/upload/images/',
+        default_image: 'upload/images/default_no_image.png',
         agp: {
             destination: 'agp/',
             prefix: "agp"
         },
     }
-}
+};

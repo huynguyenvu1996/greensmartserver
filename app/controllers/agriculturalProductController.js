@@ -17,9 +17,10 @@
 "use strict";
 
 const agriculturalProductModel = require(
-    '../../models/agriculturalProductModel')
-const openWeatherController = require('./openWeatherController')
-const utils = require('../../local_modules/green_smart/index')
+    '../../models/agriculturalProductModel');
+const openWeatherController = require('./openWeatherController');
+const utils = require('../../local_modules/green_smart/');
+const configUtils = utils.configUtils;
 const dataUtils = utils.dataUtils;
 const dateUtils = utils.dateUtils;
 const _ = require('lodash');
@@ -48,8 +49,14 @@ module.exports.Action = {
 
     postCreateAGP: (req, res, next) => {
         let agp = req.body;
-        let imagePath = req.file.path;
-        agp['image'] = imagePath.substr(imagePath.indexOf('/') + 1, imagePath.lenght);
+
+        if (!_.isUndefined(req.file)) {
+            let imagePath = req.file.path;
+            agp['image'] = imagePath.substr(imagePath.indexOf('/') + 1, imagePath.lenght);
+        } else {
+            agp['image'] = configUtils.getDefaultImage();
+        }
+
         agriculturalProductModel.createAGP(agp)
             .then((result) => {
                 res.json(result);
@@ -102,4 +109,4 @@ module.exports.Action = {
         });
     }
 
-}
+};

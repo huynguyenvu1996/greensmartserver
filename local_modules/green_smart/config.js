@@ -26,7 +26,7 @@ module.exports = {
     getUploadPrefixName: (key) => {
         return appConfigs['upload'][key]['prefix'];
     },
-    getCDNPath: (key) => {
-        return appConfigs[env]['cdn']['url'] + appConfigs[env]['cdn'][key];
+    getDefaultImage: () => {
+        return appConfigs['upload']['default_image'];
     }
 };
