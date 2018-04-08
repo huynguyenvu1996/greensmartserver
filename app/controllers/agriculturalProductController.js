@@ -101,5 +101,4 @@ module.exports.Action = {
             res.json(dataUtils.createErrorInstance(error.message));
         });
     }
-
 }

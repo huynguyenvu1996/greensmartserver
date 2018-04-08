@@ -52,15 +52,58 @@
 </head>
 <body>
 <ul id="messages"></ul>
+<div id="chartTemperature" style="height: 300px; width: 100%;"></div>
+<div id="chartHumidity" style="height: 300px; width: 100%;"></div>
 <form action="">
     <input id="m" autocomplete="off" title="input1"/>
     <button>Send</button>
 </form>
 </body>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script>
-  $(function () {
+  window.onload = function () {
+    const dpsHumidity = [] // dataPoints
+    const chartHumidity = new CanvasJS.Chart('chartHumidity', {
+      title: {
+        text: 'Humidity',
+      },
+      axisY: {
+        includeZero: false,
+      },
+      axisX: {
+        interval: 2,
+      },
+      data: [
+        {
+          type: 'line',
+          lineThickness: 5,
+          dataPoints: dpsHumidity,
+        }],
+    })
+    const dpsTemperature = []
+    const chartTemperature = new CanvasJS.Chart('chartTemperature', {
+      title: {
+        text: 'Temperature',
+      },
+      axisY: {
+        includeZero: false,
+      },
+      axisX: {
+        interval: 2,
+      },
+      data: [
+        {
+          type: 'spline',
+          lineColor: 'red',
+          lineThickness: 5,
+          dataPoints: dpsTemperature,
+        }],
+    })
+
+    let xVal = 0
+    const dataLength = 20 // number of dataPoints visible at any point
     const socket = io()
     $('form').submit(function () {
       const input = $('#m')
@@ -69,8 +112,23 @@
       return false
     })
     socket.on('event_weather_sensor', function (msg) {
-      $('#messages').append($('<li>').text(JSON.stringify(msg)))
+      //$('#messages').append($('<li>').text(JSON.stringify(msg)))
+      dpsHumidity.push({
+        x: xVal,
+        y: msg.humidity,
+      })
+      dpsTemperature.push({
+        x: xVal,
+        y: msg.temperature,
+      })
+      xVal = xVal + 2
+      if (dpsHumidity.length > dataLength) {
+        dpsHumidity.shift()
+        dpsTemperature.shift()
+      }
+      chartHumidity.render()
+      chartTemperature.render()
     })
-  })
+  }
 </script>
 </html>

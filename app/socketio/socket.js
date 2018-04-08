@@ -18,21 +18,43 @@
 
 const weatherModels = require('../../models/weather')
 const socketEvent = require('./socketEvent')
+const notificationsModel = require('../../models/notificationsModel')
+const agriculturalModel = require('../../models/agriculturalProductModel')
+const notificationUltil = require('../../configs/notification')
 
 module.exports = (io) => {
   io.on('connection', (socket) => {
 
     let sent = false
-    //hàm console.log giống như hàm Serial.println trên Arduino
-    console.log(socket.id + ' Connected') //In ra màn hình console là đã có một Socket Client kết nối thành công.
+    console.log(socket.id + ' Connected')
     socket.emit('welcome',
-      {title: 'Connected !!!!', message: 'hello ' + socket.id})
+      {title: 'Connected !!!!', message: 'hello ' + socket.id});
     socket.on('disconnect', () => {
-      console.log(socket.id + ' Disconnected') 	//in ra màn hình console cho vui
+      console.log(socket.id + ' Disconnected')
     })
-    socket.on(socketEvent.EVENT_WEATHER_SENSOR, (data) => {
+    socket.on(socketEvent.EVENT_WEATHER_SENSOR, async (data) => {
       console.log('Socket weather', JSON.stringify(data))
       const weather = weatherModels.getWeatherFromObject(data)
+      const listAPG = await agriculturalModel.getListAGP()
+      const agricultural = []
+      listAPG.forEach((element) => {
+        if (element.drying && element.notification) {
+          if (element.temp_max < weather.temperature) {
+            agricultural.push(element.name)
+          } else if (element.temp_min > weather.temperature) {
+            agricultural.push(element.name)
+          }
+          if (element.humidity_max < weather.humidity) {
+            agricultural.push(element.name)
+          } else if (element.humidity_min > weather.humidity) {
+            agricultural.push(element.name)
+          }
+        }
+      })
+      if (agricultural.length > 0) {
+        const notiContent = notificationUltil.Model.COMMON(agricultural)
+        socket.broadcast.emit(socketEvent.EVENT_PUSH_NOTIFICATION, notiContent)
+      }
       if (weather.rain === 1 && sent === false) {
         console.log('Socket rain')
         sent = true
