@@ -36,8 +36,28 @@ Action.getNotification = (req, res) => {
   })
 }
 
-Action.create = (data) => {
-  notificationModel.createNotification(data)
+Action.deleteNotification = (req, res) => {
+
+  let data = {
+    _id: req.params.id,
+    _rev: req.params.rev,
+  }
+  notificationModel.deleteNotification(data).then((result) => {
+    res.json(result)
+  }).catch((error) => {
+    res.json(error)
+  }).then()
+}
+
+Action.readNotification = (req, res) => {
+  let data = {
+    _id: req.params.id,
+  }
+  notificationModel.readNotification(data).then((result) => {
+    res.json(result)
+  }).catch((error) => {
+    res.json(error)
+  })
 }
 
 module.exports = {

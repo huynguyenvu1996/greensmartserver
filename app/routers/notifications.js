@@ -22,5 +22,6 @@ const notificationsController = require(
 
 router.get('/list', notificationsController.Action.listNotifications)
 router.get('/view/:id', notificationsController.Action.getNotification)
+router.get('/read/:id', notificationsController.Action.readNotification)
 
 module.exports = router

@@ -1,20 +1,6 @@
-/**
- * @Project GreenSmart
- * @Copyright (c) 2018 by G0714CLC. All Rights Reserved.
- * @Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-"use strict";
+const utils = require('../local_modules/green_smart')
+const dataUtils = utils.dataUtils
+const databaseUtils = utils.databaseUtils
 const docType = 'notify'
 
 class Notification {
@@ -137,8 +123,41 @@ async function createNotification (data) {
   })
 }
 
+async function deleteNotification (data) {
+  let res = null, e = null
+  await db.remove(data).then((response) => {
+    res = dataUtils.createBasicSuccessInstance()
+  }).catch((error) => {
+    e = databaseUtils.parseError(error)
+  })
+  return new Promise((resolve, reject) => {
+    !_.isNull(e) ? reject(e) : resolve(res)
+  })
+}
+
+async function readNotification (data) {
+  let res = null, e = null
+  let notifcation = {
+    _id: data._id,
+    read: true,
+    type: docType,
+  }
+
+  await db.put(notifcation).then(function (response) {
+    res = dataUtils.createBasicSuccessInstance()
+  }).catch(function (error) {
+    e = databaseUtils.parseError(error)
+  })
+
+  return new Promise((resolve, reject) => {
+    !_.isNull(e) ? reject(e) : resolve(res)
+  })
+}
+
 module.exports = {
   listNotifications,
   getNotification,
   createNotification,
+  deleteNotification,
+  readNotification,
 }

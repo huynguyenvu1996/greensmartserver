@@ -35,33 +35,38 @@ module.exports = (io) => {
     socket.on(socketEvent.EVENT_WEATHER_SENSOR, async (data) => {
       console.log('Socket weather', JSON.stringify(data))
       const weather = weatherModels.getWeatherFromObject(data)
-      const listAPG = await agriculturalModel.getListAGP()
-      const agricultural = []
-      listAPG.forEach((element) => {
-        if (element.drying && element.notification) {
-          if (element.temp_max < weather.temperature) {
-            agricultural.push(element.name)
-          } else if (element.temp_min > weather.temperature) {
-            agricultural.push(element.name)
-          }
-          if (element.humidity_max < weather.humidity) {
-            agricultural.push(element.name)
-          } else if (element.humidity_min > weather.humidity) {
-            agricultural.push(element.name)
-          }
-        }
-      })
-      if (agricultural.length > 0) {
-        const notiContent = notificationUltil.Model.COMMON(agricultural)
-        socket.broadcast.emit(socketEvent.EVENT_PUSH_NOTIFICATION, notiContent)
-      }
       if (weather.rain === 1 && sent === false) {
         console.log('Socket rain')
         sent = true
         socket.broadcast.emit(socketEvent.EVENT_RAIN_SENSOR, 'raining')
       }
-      if (weather.rain === 0 && sent === true) {
-        sent = false
+      if (weather.rain === 0) {
+        if (sent) {
+          sent = false
+        } else {
+          const listAPG = await agriculturalModel.getListAGP()
+          const agricultural = []
+          listAPG.forEach((element) => {
+            if (element.drying && element.notification) {
+              if (element.temp_max < weather.temperature) {
+                agricultural.push(element.name)
+              } else if (element.temp_min > weather.temperature) {
+                agricultural.push(element.name)
+              }
+              if (element.humidity_max < weather.humidity) {
+                agricultural.push(element.name)
+              } else if (element.humidity_min > weather.humidity) {
+                agricultural.push(element.name)
+              }
+            }
+          })
+          if (agricultural.length > 0) {
+            const notiContent = notificationUltil.Model.COMMON(agricultural)
+            await notificationsModel.createNotification(notiContent)
+            socket.broadcast.emit(socketEvent.EVENT_PUSH_NOTIFICATION,
+              notiContent)
+          }
+        }
       }
       socket.broadcast.emit(socketEvent.EVENT_WEATHER_SENSOR, weather)
     })
