@@ -1,7 +1,10 @@
 const utils = require('../local_modules/green_smart')
 const dataUtils = utils.dataUtils
 const databaseUtils = utils.databaseUtils
+const stringUtils = utils.stringUtils
+const _ = require('lodash')
 const docType = 'notify'
+let db = databaseUtils.getConnect()
 
 class Notification {
   constructor (_id, title, subject, content, read, created_at, _rev) {
@@ -102,9 +105,9 @@ async function createNotification (data) {
   try {
     notify = {
       _id: stringUtils.getUniqueId(),
-      title: data.title,
-      subject: data.subject,
-      content: data.content,
+      title: data.TITLE,
+      subject: data.SUBJECT,
+      content: data.CONTENT,
       read: false,
       created_at: Date.now().toString(),
       type: docType,
@@ -112,9 +115,9 @@ async function createNotification (data) {
   } catch (error) {
     dataUtils.createErrorInstance('CreateNotify: ' + error.message)
   }
-  await db.put(notify).then(function (response) {
-    res = dataUtils.createBasicSuccessInstance()
-  }).catch(function (error) {
+  await db.put(notify).then((response) => {
+    res = dataUtils.createSuccessInstance(response, 1)
+  }).catch((error) => {
     e = databaseUtils.parseError(error)
   })
 
@@ -137,13 +140,13 @@ async function deleteNotification (data) {
 
 async function readNotification (data) {
   let res = null, e = null
-  let notifcation = {
+  let notification = {
     _id: data._id,
     read: true,
     type: docType,
   }
 
-  await db.put(notifcation).then(function (response) {
+  await db.put(notification).then(function (response) {
     res = dataUtils.createBasicSuccessInstance()
   }).catch(function (error) {
     e = databaseUtils.parseError(error)

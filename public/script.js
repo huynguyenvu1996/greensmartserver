@@ -49,6 +49,7 @@ window.onload = function () {
   })
   socket.on('event_weather_sensor', function (msg) {
     //$('#messages').append($('<li>').text(JSON.stringify(msg)))
+    console.log('log display', msg)
     dpsHumidity.push({
       x: xVal,
       y: msg.humidity,
@@ -65,4 +66,15 @@ window.onload = function () {
     chartHumidity.render()
     chartTemperature.render()
   })
+  const weathers = {
+    temperature: 25,
+    humidity: 40,
+    rain: 0,
+  }
+  setInterval(() => {
+    socket.emit('event_weather_sensor', weathers)
+    weathers.temperature++
+    weathers.humidity++
+    console.log('log', weathers)
+  }, 2000)
 }
