@@ -37,7 +37,6 @@ Action.getNotification = (req, res) => {
 }
 
 Action.deleteNotification = (req, res) => {
-
   let data = {
     _id: req.params.id,
     _rev: req.params.rev,
