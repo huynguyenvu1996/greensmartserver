@@ -28,5 +28,8 @@ module.exports = {
     },
     getDefaultImage: () => {
         return appConfigs['upload']['default_image'];
+    },
+    getOpenWeatherImageUrl: () => {
+        return appConfigs['upload']['default_image'];
     }
 };

@@ -67,9 +67,15 @@ module.exports.Action = {
 
     postUpdateAGP: (req, res, next) => {
         let agp = req.body;
-        let imagePath = req.file.path;
-        agp['image'] = imagePath.substr(imagePath.indexOf('/') + 1, imagePath.lenght);
-        agriculturalProductModel.createAGP(agp)
+
+        if (!_.isUndefined(req.file)) {
+            let imagePath = req.file.path;
+            agp['image'] = imagePath.substr(imagePath.indexOf('/') + 1, imagePath.lenght);
+        } else {
+            agp['image'] = !_.isUndefined(req.body.image) ? req.body.image : configUtils.getDefaultImage();
+        }
+
+        agriculturalProductModel.updateAGP(agp)
             .then((result) => {
                 res.json(result);
             }).catch((error) => {
