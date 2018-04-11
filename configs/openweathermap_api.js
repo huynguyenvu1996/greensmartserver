@@ -25,5 +25,8 @@ module.exports = {
     },
     forecast: {
         url: "http://api.openweathermap.org/data/2.5/forecast"
+    },
+    image: {
+        url: "http://openweathermap.org/img/w/"
     }
-}
+};

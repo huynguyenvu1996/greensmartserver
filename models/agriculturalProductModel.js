@@ -24,6 +24,7 @@ const stringUtils = utils.stringUtils;
 const dataUtils = utils.dataUtils;
 const dateUtils = utils.dateUtils;
 const docType = 'agp';
+const owmConfigs = require('../configs/openweathermap_api');
 let db = databaseUtils.getConnect();
 
 class AgriculturalProduct {
@@ -109,8 +110,7 @@ let isWeatherCompatible = (agp, weather) => {
     // console.log(weather);
     return !!((weather.temperature >= agp.temp_min && weather.temperature <= agp.temp_max) &&
         (weather.humidity >= agp.humidity_min && weather.humidity <= agp.humidity_max) &&
-        (!(weather.rain ^ agp.detect_rain) &&
-            (dateUtils.isHourInterval(weather.dt, 6, 16))));
+        (dateUtils.isHourInterval(weather.dt, 6, 16)));
 
 };
 
@@ -209,7 +209,7 @@ module.exports = {
             detect_rain: data.detect_rain,
             drying: data.drying,
             notification: data.notification,
-            created_at: data.create_at,
+            created_at: Date.now().toString(),
             type: docType,
             _rev: data._rev
         };
@@ -239,7 +239,7 @@ module.exports = {
     },
 
     getCompatibleWeatherList: async (data, listWeather) => {
-        let listCompatibleWeather = [], e = null;
+        let listCompatibleWeather = [], res = null, e = null;
         let agpData = AgriculturalProduct.parseAGPFromRequest(data);
         let agp = null;
         if (!dataUtils.isSuccessData(agpData)) {
@@ -248,12 +248,17 @@ module.exports = {
             agp = dataUtils.getData(agpData);
             listWeather.forEach((value) => {
                 if (isWeatherCompatible(agp, value)) {
+                    value.icon = owmConfigs.image.url + value.icon + ".png";
                     listCompatibleWeather.push(value);
                 }
             });
         }
+
+        res = dataUtils.createSuccessInstance(listCompatibleWeather, listCompatibleWeather.length);
+
+
         return new Promise((resolve, reject) => {
-            !_.isNull(e) ? reject(e) : resolve(listCompatibleWeather);
+            !_.isNull(e) ? reject(e) : resolve(res);
         });
     }
 
