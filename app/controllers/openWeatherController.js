@@ -91,7 +91,10 @@ let reloadWeatherForecastFromDatabase = (req, res, next) => {
 module.exports.Action = {
 
     getCurrentWeatherFromInternet: (req, res, next) => {
-        openWeatherModel.getCurrentWeatherFromInternet(coord)
+      const coordinate = {}
+      coordinate.lat = req.query.lat ? req.query.lat : coord.lat
+      coordinate.lng = req.query.lng ? req.query.lng : coord.lng
+      openWeatherModel.getCurrentWeatherFromInternet(coordinate)
             .then((result) => {
                 res.json(result);
             })

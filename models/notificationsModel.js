@@ -50,7 +50,7 @@ class Notification {
 
 }
 
-async function listNotifications (params) {
+async function listNotifications (condition) {
   let listNotify = null, e = null
 
   await db.createIndex({
@@ -68,7 +68,7 @@ async function listNotifications (params) {
         type: docType,
         created_at: {$gt: true},
       },
-      sort: [{created_at: 'desc'}],
+      sort: [{created_at: condition.sort}],
     }, (error, result) => {
       if (error) {
         e = databaseUtils.parseError(error)

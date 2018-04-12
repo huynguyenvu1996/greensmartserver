@@ -70,8 +70,7 @@ module.exports = (io) => {
             if (agricultural.length > 0) {
               const notiContent = notificationUltil.Model.COMMON(agricultural)
               try {
-                console.log('log 111 ',
-                  await notificationsModel.createNotification(notiContent))
+                await notificationsModel.createNotification(notiContent)
                 delayTime = Date.now()
               } catch (e) {
                 console.log('log 222', e)

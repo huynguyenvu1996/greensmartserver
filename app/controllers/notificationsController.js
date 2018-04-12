@@ -20,7 +20,9 @@ const notificationModel = require(
 
 const Action = {}
 Action.listNotifications = (req, res, next) => {
-  notificationModel.listNotifications().then((result) => {
+  const condition = {}
+  condition.sort = req.query.sort ? req.query.sort : 'desc'
+  notificationModel.listNotifications(condition).then((result) => {
     res.json(result)
   }).catch((error) => {
     res.json(error)
