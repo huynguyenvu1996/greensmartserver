@@ -103,7 +103,8 @@ class OpenWeather {
                         humidity: value.main.humidity,
                         rain: !_.isEmpty(value.rain) ? true : false,
                         description: value.weather['0'].description.charAt(0).toUpperCase() + value.weather['0'].description.slice(1),
-                        icon: value.weather['0'].icon,
+                      icon: owmConfigs.image.url + value.weather['0'].icon +
+                      '.png',
                         country: result.city.country,
                         dt: (value.dt * 1000).toString()
                     }
