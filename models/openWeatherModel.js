@@ -79,7 +79,7 @@ class OpenWeather {
                     city_name: result.name,
                     temperature: result.main.temp,
                     humidity: result.main.humidity,
-                    rain: !_.isEmpty(result.rain) ? true : false,
+                  rain: !_.isEmpty(result.rain),
                     description: result.weather['0'].description.charAt(0).toUpperCase() + result.weather['0'].description.slice(1),
                     icon: result.weather.icon,
                     country: result.sys.country,
