@@ -15,3 +15,54 @@
  */
 
 "use strict";
+const notificationModel = require(
+  '../../models/notificationsModel')
+
+const Action = {}
+Action.listNotifications = (req, res, next) => {
+  const condition = {}
+  condition.sort = req.query.sort ? req.query.sort : 'desc'
+  notificationModel.listNotifications(condition).then((result) => {
+    res.json(result)
+  }).catch((error) => {
+    res.json(error)
+  })
+}
+
+Action.getNotification = (req, res) => {
+  let _id = req.params.id
+  notificationModel.getNotification(_id).then((result) => {
+    res.json(result)
+  }).catch((error) => {
+    res.json(error)
+  })
+}
+
+Action.deleteNotification = (req, res) => {
+  let data = {
+    _id: req.params.id,
+    _rev: req.params.rev,
+  }
+  notificationModel.deleteNotification(data).then((result) => {
+    res.json(result)
+  }).catch((error) => {
+    res.json(error)
+  }).then()
+}
+
+Action.readNotification = (req, res) => {
+  let data = {
+    _id: req.params.id,
+  }
+  notificationModel.readNotification(data).then((result) => {
+    res.json(result)
+  }).catch((error) => {
+    res.json(error)
+  })
+}
+
+module.exports = {
+  Action,
+}
+
+

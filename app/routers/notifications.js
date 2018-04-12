@@ -17,8 +17,12 @@
 "use strict";
 
 const router = require('express').Router();
+const notificationsController = require(
+  '../controllers/notificationsController')
 
-module.exports = () => {
+router.get('/list', notificationsController.Action.listNotifications)
+router.get('/view/:id', notificationsController.Action.getNotification)
+router.get('/read/:id', notificationsController.Action.readNotification)
+router.get('/delete/:id', notificationsController.Action.deleteNotification)
 
-    return router;
-};
+module.exports = router
