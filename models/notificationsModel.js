@@ -105,9 +105,9 @@ async function createNotification (data) {
   try {
     notify = {
       _id: stringUtils.getUniqueId(),
-      title: data.TITLE,
-      subject: data.SUBJECT,
-      content: data.CONTENT,
+      title: data.title,
+      subject: data.subject,
+      content: data.content,
       read: false,
       created_at: Date.now().toString(),
       type: docType,
