@@ -116,13 +116,13 @@ module.exports.Action = {
         openWeatherModel.getWeatherForecastFromDatabase()
             .then((result) => {
                 if (_.isEqual(result.count, 0)) {
-                    this.reloadWeatherForecastFromDatabase(req, res, next);
+                  reloadWeatherForecastFromDatabase(req, res, next)
                 } else {
                     if (dateUtils.isPassedNewHour(result.data['0'].dt)) {
                         console.log('==> IsPassedNewHour: true');
                         openWeatherModel.deleteWeatherForecastFromDatabase(result.data)
                             .then((result) => {
-                                this.reloadWeatherForecastFromDatabase(req, res, next);
+                          reloadWeatherForecastFromDatabase(req, res, next)
                             }).catch((error) => {
                             res.json(error);
                         });
