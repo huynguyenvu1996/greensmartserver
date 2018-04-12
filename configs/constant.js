@@ -1,3 +1,3 @@
 module.exports = {
-  DELAY_NOTIFICATION: 10 * 1000,
+  DELAY_NOTIFICATION: 1 * 60 * 1000,
 }

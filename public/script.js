@@ -41,13 +41,13 @@ window.onload = function () {
   let xVal = 0
   const dataLength = 20 // number of dataPoints visible at any point
   const socket = io()
-  $('form').submit(function () {
+  $('form').submit(() => {
     const input = $('#m')
     socket.emit('event_rain_sensor', input.val())
     input.val('')
     return false
   })
-  socket.on('event_weather_sensor', function (msg) {
+  socket.on('event_weather_sensor', (msg) => {
     //$('#messages').append($('<li>').text(JSON.stringify(msg)))
     console.log('log display', msg)
     dpsHumidity.push({

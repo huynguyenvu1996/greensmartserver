@@ -35,16 +35,15 @@ module.exports = (io) => {
       console.log(socket.id + ' Disconnected')
     })
     socket.on(socketEvent.EVENT_WEATHER_SENSOR, async (data) => {
-      console.log('Socket weather', JSON.stringify(data))
       const weather = weatherModels.getWeatherFromObject(data)
+      console.log('Socket weather', JSON.stringify(weather))
       socket.broadcast.emit(socketEvent.EVENT_WEATHER_SENSOR, weather)
       if (Date.now() - delayTime > constant.DELAY_NOTIFICATION) {
-        console.log('log333', delayTime)
         if (weather.rain === 1 && sent === false) {
           console.log('Socket rain')
           sent = true
           socket.broadcast.emit(socketEvent.EVENT_PUSH_NOTIFICATION,
-            notificationUltil.Model.RAIN)
+            notificationUltil.Model.RAIN);
           delayTime = Date.now()
         }
         if (weather.rain === 0) {
@@ -70,14 +69,15 @@ module.exports = (io) => {
             if (agricultural.length > 0) {
               const notiContent = notificationUltil.Model.COMMON(agricultural)
               try {
-                await notificationsModel.createNotification(notiContent)
+                const result = await notificationsModel.createNotification(
+                  notiContent)
+                delete notiContent.content
+                notiContent._id = result.data._id
+                socket.broadcast.emit(socketEvent.EVENT_PUSH_NOTIFICATION,
+                  notiContent)
                 delayTime = Date.now()
               } catch (e) {
-                console.log('log 222', e)
               }
-
-              socket.broadcast.emit(socketEvent.EVENT_PUSH_NOTIFICATION,
-                notiContent)
             }
           }
         }
