@@ -28,11 +28,13 @@
             margin-right: .5%;
         }
 
-        form button {
+        button {
             width: 9%;
             background: rgb(130, 224, 255);
             border: none;
             padding: 10px;
+            position: fixed;
+            bottom: 0;
         }
 
         #messages {
@@ -54,10 +56,13 @@
 <ul id="messages"></ul>
 <div id="chartTemperature" style="height: 300px; width: 100%;"></div>
 <div id="chartHumidity" style="height: 300px; width: 100%;"></div>
-<form action="">
-    <input id="m" autocomplete="off" title="input1"/>
-    <button>Send</button>
-</form>
+<!--<form action="">-->
+<!--<input id="m" autocomplete="off" title="input1"/>-->
+<!--<button>Send</button>-->
+<!--</form>-->
+<button id="btn_rain" style="">
+    Rain
+</button>
 </body>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>

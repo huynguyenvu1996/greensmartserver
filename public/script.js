@@ -41,12 +41,6 @@ window.onload = function () {
   let xVal = 0
   const dataLength = 20 // number of dataPoints visible at any point
   const socket = io()
-  $('form').submit(() => {
-    const input = $('#m')
-    socket.emit('event_rain_sensor', input.val())
-    input.val('')
-    return false
-  })
   socket.on('event_weather_sensor', (msg) => {
     //$('#messages').append($('<li>').text(JSON.stringify(msg)))
     console.log('log display', msg)
@@ -75,6 +69,17 @@ window.onload = function () {
     socket.emit('event_weather_sensor', weathers)
     weathers.temperature++
     weathers.humidity++
+
     console.log('log', weathers)
-  }, 2000)
+  }, 2000);
+  $('form').submit(() => {
+    const input = $('#m')
+    //socket.emit('event_rain_sensor', input.val())
+    input.val('')
+    return false
+  })
+  $('#btn_rain').on('click', () => {
+    console.log('log', 'click-button')
+    weathers.rain = 1 - weathers.rain
+  })
 }

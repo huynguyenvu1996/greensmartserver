@@ -1,8 +1,8 @@
 module.exports.Model = {
   RAIN: {
-    title: 'Co Mua!',
-    subject: '',
-    content: '',
+    title: 'Mưa rồi zolo thôi!',
+    subject: 'Trời đang mưa',
+    content: 'Trời đang mưa. Bạn nên thu dọn nông sản.',
   },
   TEMPERATURE: {
     title: 'Nhiet do!',
