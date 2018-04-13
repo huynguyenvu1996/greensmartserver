@@ -65,21 +65,23 @@ window.onload = function () {
     humidity: 40,
     rain: 0,
   }
-  setInterval(() => {
-    socket.emit('event_weather_sensor', weathers)
-    weathers.temperature++
-    weathers.humidity++
-
-    console.log('log', weathers)
-  }, 2000);
   $('form').submit(() => {
     const input = $('#m')
     //socket.emit('event_rain_sensor', input.val())
     input.val('')
     return false
   })
-  $('#btn_rain').on('click', () => {
+  $('#btn-rain').on('click', () => {
     console.log('log', 'click-button')
     weathers.rain = 1 - weathers.rain
+  })
+  $('#btn-test').on('click', () => {
+    setInterval(() => {
+      socket.emit('event_weather_sensor', weathers)
+      weathers.temperature++
+      weathers.humidity++
+
+      console.log('log', weathers)
+    }, 2000)
   })
 }
