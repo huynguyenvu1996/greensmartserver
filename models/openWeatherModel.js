@@ -79,9 +79,9 @@ class OpenWeather {
                     city_name: result.name,
                     temperature: result.main.temp,
                     humidity: result.main.humidity,
-                  rain: !_.isEmpty(result.rain),
+                    rain: !_.isEmpty(result.rain),
                     description: result.weather['0'].description.charAt(0).toUpperCase() + result.weather['0'].description.slice(1),
-                    icon: result.weather.icon,
+                    icon: owmConfigs.image.url + result.weather['0'].icon + '.png',
                     country: result.sys.country,
                     dt: (result.dt * 1000).toString()
                 }, 1);
@@ -101,10 +101,9 @@ class OpenWeather {
                         city_name: result.city.name,
                         temperature: value.main.temp,
                         humidity: value.main.humidity,
-                        rain: !_.isEmpty(value.rain) ? true : false,
+                        rain: !_.isEmpty(value.rain),
                         description: value.weather['0'].description.charAt(0).toUpperCase() + value.weather['0'].description.slice(1),
-                      icon: owmConfigs.image.url + value.weather['0'].icon +
-                      '.png',
+                        icon: owmConfigs.image.url + value.weather['0'].icon + '.png',
                         country: result.city.country,
                         dt: (value.dt * 1000).toString()
                     }
@@ -153,6 +152,7 @@ class OpenWeather {
 module.exports = {
 
     getCurrentWeatherFromInternet: async (coordinate) => {
+        console.log(coordinate);
         let weather = null, e = null;
         let query = {
             lat: coordinate.lat,
