@@ -53,10 +53,12 @@ module.exports = (io) => {
               try {
                 const result = await notificationsModel.createNotification(
                   notiContent)
+                console.log('log', notiContent)
                 delete notiContent.content
-                notiContent._id = result.data._id
+                notiContent.id = result.data.id
                 socket.broadcast.emit(socketEvent.EVENT_PUSH_NOTIFICATION,
                   notiContent)
+                console.log('log ', 'pushed')
                 delayTime = Date.now()
               } catch (e) {
               }
