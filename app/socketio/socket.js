@@ -22,20 +22,20 @@ module.exports = (io) => {
       const weather = weatherModels.getWeatherFromObject(data)
       console.log('Socket weather', JSON.stringify(weather))
       socket.broadcast.emit(socketEvent.EVENT_WEATHER_SENSOR, weather)
-      if (Date.now() - delayTimeRain > constant.DELAY_NOTIFICATION) {
+      if (Date.now() - delayTimeRain > constant.DELAY_NOTIFICATION && wait ===
+        false) {
         wait = true
         if (weather.rain === 1) {
           try {
             const notiContent = notificationUltil.Model.RAIN
             const result = await notificationsModel.createNotification(
               notiContent)
-            console.log('log', notiContent)
+            console.log('Rain pushed', notiContent)
             delete notiContent.content
             notiContent.id = result.data.id
             delayTimeRain = Date.now()
             socket.broadcast.emit(socketEvent.EVENT_PUSH_NOTIFICATION,
               notiContent)
-            console.log('Rain', 'pushed')
           } catch (e) {
           }
         }
@@ -73,13 +73,12 @@ module.exports = (io) => {
             try {
               const result = await notificationsModel.createNotification(
                 notiContent)
-              console.log('log', notiContent)
+              console.log('Reather Pushed', notiContent)
               delete notiContent.content
               notiContent.id = result.data.id
               delayTime = Date.now()
               socket.broadcast.emit(socketEvent.EVENT_PUSH_NOTIFICATION,
                 notiContent)
-              console.log('log Weather', 'pushed')
             } catch (e) {
             }
           }
