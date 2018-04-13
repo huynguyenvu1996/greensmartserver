@@ -116,7 +116,7 @@ let isWeatherCompatible = (agp, weather) => {
   return !!((weather.temperature >= agp.temp_min && weather.temperature <=
     agp.temp_max) &&
     (weather.humidity >= agp.humidity_min && weather.humidity <=
-      agp.humidity_max) &&
+      agp.humidity_max) && (!weather.rain)
     (dateUtils.isHourInterval(weather.dt, 6, 16)))
 
 }

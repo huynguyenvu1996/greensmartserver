@@ -12,7 +12,7 @@ module.exports.Model = {
   HUMIDITY: {
     title: 'Do am!',
     subject: '',
-    content: '',
+    content: 'Độ ẩm không phù hợp',
   },
   COMMON: (agricultural) => {
     const content = `Thời tiết không phù hợp, bạn nên chú ý đến một số sản phẩm sau: ${agricultural.toString()}`
