@@ -185,7 +185,7 @@ module.exports = {
             })
         }
         return new Promise((resolve, reject) => {
-            !_.isNull(listAGP) ? resolve(listAGP) : reject(error)
+            !_.isNull(listAGP) ? resolve(listAGP) : reject(e)
         })
     },
     viewAGPInfo: async (_id) => {
